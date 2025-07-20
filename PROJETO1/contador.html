@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Contagem da Senha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .senha {
+            font-size: 100px;
+            margin-bottom: 30px;
+            color: #c0392b;
+        }
+        button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="senha" id="senhaDisplay">---</div>
+
+    <button onclick="passar()">Passar</button>
+    <button onclick="voltar()">Voltar</button>
+    <button onclick="reiniciar()">Reiniciar</button>
+    <button onclick="repetir()">Repetir</button>
+
+    <script>
+        let numeroAtual = 0;
+        const maxSenhas = 2000;
+        const display = document.getElementById("senhaDisplay");
+        let ultimaMensagem = "";
+
+        function passar() {
+            if (numeroAtual < maxSenhas) {
+                numeroAtual++;
+                atualizarDisplay();
+            }
+        }
+
+        function voltar() {
+            if (numeroAtual > 0) {
+                numeroAtual--;
+                atualizarDisplay();
+            }
+        }
+
+        function reiniciar() {
+            numeroAtual = 0;
+            atualizarDisplay();
+        }
+
+        function repetir() {
+            if (ultimaMensagem) {
+                falarSenha(ultimaMensagem);
+            }
+        }
+
+        function atualizarDisplay() {
+            if (numeroAtual === 0) {
+                display.textContent = "---";
+                ultimaMensagem = "";
+            } else {
+                const texto = ` SENHA: ${numeroAtual}`;
+                display.textContent = texto;
+                ultimaMensagem = ` senha ${numeroAtual}`;
+                falarSenha(ultimaMensagem);
+            }
+        }
+
+        function falarSenha(texto) {
+            const synth = window.speechSynthesis;
+            synth.cancel(); // Cancela qualquer fala anterior
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            synth.speak(utterance);
+        }
+
+        atualizarDisplay();
+    </script>
+
+</body>
+</html>
